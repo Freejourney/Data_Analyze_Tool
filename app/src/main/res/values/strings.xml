@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Data_Analysis_Tool</string>
-    <string name="title_item_detail">Item Detail</string>
+    <string name="title_item_detail">数据分析</string>
 </resources>

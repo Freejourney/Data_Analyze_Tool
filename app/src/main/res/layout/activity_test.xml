@@ -6,7 +6,20 @@
     <Button
         android:id="@+id/btn_test"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="本地相册分析"/>
+
+    <Button
+        android:id="@+id/btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="实物拍照分析"/>
+
+    <Button
+        android:id="@+id/btn_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Excel文件分析"/>
 
     <TextView
         android:id="@+id/tv_content"

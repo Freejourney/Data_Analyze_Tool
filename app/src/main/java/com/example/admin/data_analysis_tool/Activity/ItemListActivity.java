@@ -1,4 +1,4 @@
-package com.example.admin.data_analysis_tool;
+package com.example.admin.data_analysis_tool.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.admin.data_analysis_tool.Fragment.ItemDetailFragment;
+import com.example.admin.data_analysis_tool.R;
 import com.example.admin.data_analysis_tool.dummy.DummyContent;
 
 import java.util.List;
@@ -53,10 +55,6 @@ public class ItemListActivity extends AppCompatActivity {
         });
 
         if (findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 

@@ -1,5 +1,10 @@
 package com.example.admin.data_analysis_tool;
 
+import com.example.admin.data_analysis_tool.Utils.AuthService;
+import com.example.admin.data_analysis_tool.Utils.Base64Util;
+import com.example.admin.data_analysis_tool.Utils.FileUtil;
+import com.example.admin.data_analysis_tool.Utils.HttpUtil;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,12 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class baidu_table_rec {
 	
 	private String request_Url = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request";
-	private String Body = "";
 	private String AccessToken = "";
 	
 	private void RequestPost(String url, String accessToken) {
@@ -53,8 +58,10 @@ public class baidu_table_rec {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
+		} catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 	
 
 

@@ -1,4 +1,4 @@
-package com.example.admin.data_analysis_tool;
+package com.example.admin.data_analysis_tool.Utils;
 
 public class Base64Util {
     private static final char last2byte = (char) Integer.parseInt("00000011", 2);

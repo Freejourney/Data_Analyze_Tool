@@ -1,4 +1,4 @@
-package com.example.admin.data_analysis_tool;
+package com.example.admin.data_analysis_tool.Utils;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.naming.Context;
 
 public class FileUtil {
 

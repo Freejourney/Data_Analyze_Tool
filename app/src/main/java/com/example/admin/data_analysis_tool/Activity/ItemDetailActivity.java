@@ -1,4 +1,4 @@
-package com.example.admin.data_analysis_tool;
+package com.example.admin.data_analysis_tool.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+
+import com.example.admin.data_analysis_tool.Fragment.ItemDetailFragment;
+import com.example.admin.data_analysis_tool.R;
 
 /**
  * An activity representing a single Item detail screen. This
@@ -68,12 +71,6 @@ public class ItemDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             navigateUpTo(new Intent(this, ItemListActivity.class));
             return true;
         }

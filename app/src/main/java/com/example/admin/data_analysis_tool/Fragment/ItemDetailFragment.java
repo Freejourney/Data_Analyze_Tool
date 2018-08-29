@@ -1,4 +1,4 @@
-package com.example.admin.data_analysis_tool;
+package com.example.admin.data_analysis_tool.Fragment;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.admin.data_analysis_tool.Activity.ItemDetailActivity;
+import com.example.admin.data_analysis_tool.Activity.ItemListActivity;
+import com.example.admin.data_analysis_tool.R;
 import com.example.admin.data_analysis_tool.dummy.DummyContent;
 
 /**
@@ -49,7 +52,7 @@ public class ItemDetailFragment extends Fragment {
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
+                appBarLayout.setTitle("Apriori Algorithm");
             }
         }
     }
