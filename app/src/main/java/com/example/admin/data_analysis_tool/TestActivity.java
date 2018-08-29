@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,23 +40,23 @@ public class TestActivity extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i("out", recognition.getAuth());
-                    }
-                }).start();
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.i("out", recognition.getAuth());
+//                    }
+//                }).start();
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            recognition.requestPic(TestActivity.this.getAssets().getLocales() + "simple.txt", recognition.getAuth());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            recognition.requestPic(TestActivity.this.getAssets().getLocales() + "simple.txt", recognition.getAuth());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }).start();
             }
         });
     }
@@ -66,12 +67,14 @@ public class TestActivity extends Activity {
         List<List<String>> cItemset = apriori.findFirstCandidate();// 获取第一次的备选集
         List<List<String>> lItemset = apriori.getSupportedItemset(cItemset);// 获取备选集cItemset满足支持的集合
 
+        String result = "";
+
         while (apriori.endTag != true) {// 只要能继续挖掘
             List<List<String>> ckItemset = apriori.getNextCandidate(lItemset);// 获取第下一次的备选集
             List<List<String>> lkItemset = apriori.getSupportedItemset(ckItemset);// 获取备选集cItemset满足支持的集合
             apriori.getConfidencedItemset(lkItemset, lItemset, apriori.dkCountMap, apriori.dCountMap);// 获取备选集cItemset满足置信度的集合
             if (apriori.confItemset.size() != 0)// 满足置信度的集合不为空
-                apriori.printConfItemset(apriori.confItemset);// 打印满足置信度的集合
+                result = apriori.printConfItemset(apriori.confItemset);// 打印满足置信度的集合
             apriori.confItemset.clear();// 清空置信度的集合
             cItemset = ckItemset;// 保存数据，为下次循环迭代准备
             lItemset = lkItemset;
@@ -79,7 +82,7 @@ public class TestActivity extends Activity {
             apriori.dCountMap.putAll(apriori.dkCountMap);
             ;
         }
-
+        tv_content.setText(result);
     }
 
 }
