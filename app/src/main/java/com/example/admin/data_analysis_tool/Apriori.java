@@ -1,7 +1,11 @@
 package com.example.admin.data_analysis_tool;
 
+import android.content.Context;
+
+import com.example.admin.data_analysis_tool.Activity.TestActivity;
 import com.example.admin.data_analysis_tool.Utils.TxtReader;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,30 +34,29 @@ public class Apriori {
     static List<Double> confCount = new ArrayList<Double>();// 置信度记录表
     static List<List<String>> confItemset = new ArrayList<List<String>>();// 满足支持度的集合
 
-    /**
-     * @param args
-     */
-//    public static void main(String[] args) {
-//        // TODO Auto-generated method stub
-//        record = getRecord();// 获取原始数据记录
-//        List<List<String>> cItemset = findFirstCandidate();// 获取第一次的备选集
-//        List<List<String>> lItemset = getSupportedItemset(cItemset);// 获取备选集cItemset满足支持的集合
-//
-//        while (endTag != true) {// 只要能继续挖掘
-//            List<List<String>> ckItemset = getNextCandidate(lItemset);// 获取第下一次的备选集
-//            List<List<String>> lkItemset = getSupportedItemset(ckItemset);// 获取备选集cItemset满足支持的集合
-//            getConfidencedItemset(lkItemset, lItemset, dkCountMap, dCountMap);// 获取备选集cItemset满足置信度的集合
-//            if (confItemset.size() != 0)// 满足置信度的集合不为空
-//                printConfItemset(confItemset);// 打印满足置信度的集合
-//            confItemset.clear();// 清空置信度的集合
-//            cItemset = ckItemset;// 保存数据，为下次循环迭代准备
-//            lItemset = lkItemset;
-//            dCountMap.clear();
-//            dCountMap.putAll(dkCountMap);
-//            ;
-//        }
-//
-//    }
+
+    public void main(Context context) throws IOException {
+        // TODO Auto-generated method stub
+        record = getRecord(context.getAssets().open("simple.txt"));// 获取原始数据记录
+        List<List<String>> cItemset = findFirstCandidate();// 获取第一次的备选集
+        List<List<String>> lItemset = getSupportedItemset(cItemset);// 获取备选集cItemset满足支持的集合
+
+        String result = "";
+
+        while (endTag != true) {// 只要能继续挖掘
+            List<List<String>> ckItemset = getNextCandidate(lItemset);// 获取第下一次的备选集
+            List<List<String>> lkItemset = getSupportedItemset(ckItemset);// 获取备选集cItemset满足支持的集合
+            getConfidencedItemset(lkItemset, lItemset, dkCountMap, dCountMap);// 获取备选集cItemset满足置信度的集合
+            if (confItemset.size() != 0)// 满足置信度的集合不为空
+                result = printConfItemset(confItemset);// 打印满足置信度的集合
+            confItemset.clear();// 清空置信度的集合
+            cItemset = ckItemset;// 保存数据，为下次循环迭代准备
+            lItemset = lkItemset;
+            dCountMap.clear();
+            dCountMap.putAll(dkCountMap);
+        }
+//        tv_content.setText(result);
+    }
 
     /**
      * @param confItemset2

@@ -28,7 +28,6 @@ public class TestActivity extends Activity implements View.OnClickListener{
     private Button btn_test, btn_camera, btn_file;
     private Bitmap middleBitmap;
     String image_name = "";
-    Recognition recognition = new Recognition();
 
     static List<List<String>> record = new ArrayList<List<String>>();// 数据记录表
 
@@ -73,29 +72,6 @@ public class TestActivity extends Activity implements View.OnClickListener{
 //        });
     }
 
-    public void test(Apriori apriori) throws IOException {
-        // TODO Auto-generated method stub
-        apriori.record = apriori.getRecord(TestActivity.this.getAssets().open("simple.txt"));// 获取原始数据记录
-        List<List<String>> cItemset = apriori.findFirstCandidate();// 获取第一次的备选集
-        List<List<String>> lItemset = apriori.getSupportedItemset(cItemset);// 获取备选集cItemset满足支持的集合
-
-        String result = "";
-
-        while (apriori.endTag != true) {// 只要能继续挖掘
-            List<List<String>> ckItemset = apriori.getNextCandidate(lItemset);// 获取第下一次的备选集
-            List<List<String>> lkItemset = apriori.getSupportedItemset(ckItemset);// 获取备选集cItemset满足支持的集合
-            apriori.getConfidencedItemset(lkItemset, lItemset, apriori.dkCountMap, apriori.dCountMap);// 获取备选集cItemset满足置信度的集合
-            if (apriori.confItemset.size() != 0)// 满足置信度的集合不为空
-                result = apriori.printConfItemset(apriori.confItemset);// 打印满足置信度的集合
-            apriori.confItemset.clear();// 清空置信度的集合
-            cItemset = ckItemset;// 保存数据，为下次循环迭代准备
-            lItemset = lkItemset;
-            apriori.dCountMap.clear();
-            apriori.dCountMap.putAll(apriori.dkCountMap);
-            ;
-        }
-        tv_content.setText(result);
-    }
 
     private void startCut(Uri uri){
         Intent intent = new Intent("com.android.camera.action.CROP");
