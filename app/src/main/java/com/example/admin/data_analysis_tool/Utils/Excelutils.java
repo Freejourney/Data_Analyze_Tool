@@ -16,7 +16,7 @@ import static android.content.ContentValues.TAG;
 
 public class Excelutils {
 
-    private ArrayList<Student> getXlsData(String xlsName, int index, Context context) {
+    public ArrayList<Student> getXlsData(String xlsName, int index, Context context) {
         ArrayList<Student> countryList = new ArrayList<Student>();
         AssetManager assetManager = context.getAssets();
 
