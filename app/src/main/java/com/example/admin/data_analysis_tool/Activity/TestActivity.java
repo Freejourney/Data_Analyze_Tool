@@ -10,15 +10,21 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.admin.data_analysis_tool.Apriori;
 import com.example.admin.data_analysis_tool.Utils.ImagesUtil;
 import com.example.admin.data_analysis_tool.R;
+import com.example.admin.data_analysis_tool.baidu_table_rec;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +34,16 @@ public class TestActivity extends Activity implements View.OnClickListener{
     private Button btn_test, btn_camera, btn_file;
     private Bitmap middleBitmap;
     String image_name = "";
+    private Apriori apriori = new Apriori();
+    private baidu_table_rec btr = new baidu_table_rec();
 
     static List<List<String>> record = new ArrayList<List<String>>();// 数据记录表
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_test);
         tv_content = findViewById(R.id.tv_content);
         btn_test = findViewById(R.id.btn_test);
@@ -122,15 +132,33 @@ public class TestActivity extends Activity implements View.OnClickListener{
                 //裁剪之后
                 Bundle bundle = data.getExtras();
                 if(bundle != null){
-                    Bitmap bitmap = bundle.getParcelable("data");
-//                    startRecognize(bitmap);
+                    final Bitmap bitmap = bundle.getParcelable("data");
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    startRecognize(bitmap);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
                 }
             }
         }
         if(resultCode == Activity.RESULT_CANCELED && requestCode == 3){
             //选择不裁剪
             if(middleBitmap != null && !middleBitmap.isRecycled()){
-//                startRecognize(middleBitmap);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            startRecognize(middleBitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 middleBitmap = null;
             }
         }
@@ -153,5 +181,24 @@ public class TestActivity extends Activity implements View.OnClickListener{
 
                 break;
         }
+    }
+
+    public void startRecognize(Bitmap bitmap) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        InputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        btr.main(input2byte(isBm), TestActivity.this);
+    }
+
+    public byte[] input2byte(InputStream inStream)
+            throws IOException {
+        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+        byte[] buff = new byte[100];
+        int rc = 0;
+        while ((rc = inStream.read(buff, 0, 100)) > 0) {
+            swapStream.write(buff, 0, rc);
+        }
+        byte[] in2b = swapStream.toByteArray();
+        return in2b;
     }
 }
