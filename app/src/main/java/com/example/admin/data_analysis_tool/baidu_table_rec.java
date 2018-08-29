@@ -1,7 +1,11 @@
 package com.example.admin.data_analysis_tool;
 
+import android.content.Context;
+import android.os.Environment;
+
 import com.example.admin.data_analysis_tool.Utils.AuthService;
 import com.example.admin.data_analysis_tool.Utils.Base64Util;
+import com.example.admin.data_analysis_tool.Utils.Excelutils;
 import com.example.admin.data_analysis_tool.Utils.FileUtil;
 import com.example.admin.data_analysis_tool.Utils.HttpUtil;
 
@@ -21,14 +25,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class baidu_table_rec {
-	
+
+    private Context context;
 	private String request_Url = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request";
 	private String AccessToken = "";
+	private String filename = "";
 	
-	private void RequestPost(String url, String accessToken) {
+	private void RequestPost(String url, String accessToken, byte[] stream) {
 		try {
-			byte[] imgData = FileUtil.readFileByBytes("/home/ddw/eclipse-workspace/APIcaller/test3.jpg");
-			String imgStr = Base64Util.encode(imgData);
+			String imgStr = Base64Util.encode(stream);
             final String params = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(imgStr, "UTF-8");
             String resultjson = HttpUtil.post(url, accessToken, params);
             System.out.println(resultjson);
@@ -51,9 +56,11 @@ public class baidu_table_rec {
             JSONObject recdata = (JSONObject) jsonRecResult.get("result");
             String result_data = recdata.getString("result_data");
             System.out.println("Return xls file url : " + recdata.getString("result_data"));
-       
-            downLoadFromUrl(result_data, "test3.xls", "/home/ddw/eclipse-workspace/APIcaller/");
-            
+
+            filename = "analysisdata" + System.currentTimeMillis() +".xls";
+            downLoadFromUrl(result_data, filename, String.valueOf(context.getAssets()));
+            Excelutils excelutils = new Excelutils();
+            excelutils.getXlsData(filename,0, context);
             System.out.println(result);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -120,11 +127,12 @@ public class baidu_table_rec {
         return bos.toByteArray();
     }
 
-	public static void main(String[] args) {
+	public void main(byte[] stream, Context context) {
+        this.context = context;
 		baidu_table_rec btr = new baidu_table_rec();
 		AuthService authService = new AuthService();
 		btr.AccessToken = authService.getAuth();
-		btr.RequestPost(btr.request_Url, btr.AccessToken);
+		btr.RequestPost(btr.request_Url, btr.AccessToken, stream);
 //		System.out.println("Access Token : "+authService.getAuth());
 	}
 }
