@@ -15,6 +15,7 @@ public class TxtReader {
 
     public List<List<String>> getRecord(InputStream stream) {
         List<List<String>> record = new ArrayList<List<String>>();
+
         try {
             String encoding = "UTF-8"; // 字符编码(可解决中文乱码问题 )
             InputStreamReader read = new InputStreamReader(stream, encoding);
@@ -24,13 +25,13 @@ public class TxtReader {
                 String[] lineString = lineTXT.split("	");
                 List<String> lineList = new ArrayList<String>();
                 for (int i = 0; i < lineString.length; i++) {//处理矩阵中的T、F、YES、NO
-                    if (lineString[i].endsWith("T")
-                            || lineString[i].endsWith("YES"))
-                        lineList.add(record.get(0).get(i));
-                    else if (lineString[i].endsWith("F")
-                            || lineString[i].endsWith("NO"))
+//                    if (lineString[i].endsWith("T")
+//                            || lineString[i].endsWith("YES"))
+//                        lineList.add(record.get(0).get(i));
+//                    else if (lineString[i].endsWith("F")
+//                            || lineString[i].endsWith("NO"))
                         ;// F，NO记录不保存
-                    else
+//                    else
                         lineList.add(lineString[i]);
                 }
                 record.add(lineList);
