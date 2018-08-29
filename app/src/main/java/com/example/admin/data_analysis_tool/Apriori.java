@@ -57,18 +57,23 @@ public class Apriori {
      * @param confItemset2
      * 输出满足条件的频繁集
      */
-    static void printConfItemset(List<List<String>> confItemset2) {
+    static String printConfItemset(List<List<String>> confItemset2) {
+        String confitemsetmsg = "";
         System.out.print("*********频繁模式挖掘结果***********\n");
+        confitemsetmsg += "*********频繁模式挖掘结果***********\n";
         for (int i = 0; i < confItemset2.size(); i++) {
             int j = 0;
-            for (j = 0; j < confItemset2.get(i).size() - 3; j++)
+            for (j = 0; j < confItemset2.get(i).size() - 3; j++) {
                 System.out.print(confItemset2.get(i).get(j) + " ");
+                confitemsetmsg += confItemset2.get(i).get(j) + " ";
+            }
             System.out.print("-->");
             System.out.print(confItemset2.get(i).get(j++));
             System.out.print("相对支持度：" + confItemset2.get(i).get(j++));
             System.out.print("自信度：" + confItemset2.get(i).get(j++) + "\n");
+            confitemsetmsg += "-->" + confItemset2.get(i).get(j-1) + "相对支持度" + confItemset2.get(i).get(j-1) + "自信度：" + confItemset2.get(i).get(j++) + "\n";
         }
-
+        return confitemsetmsg;
     }
 
     /**
