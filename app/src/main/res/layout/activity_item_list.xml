@@ -29,7 +29,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:background="@drawable/iv"/>
+            android:background="@drawable/iv_1"/>
 
         <FrameLayout
             android:id="@+id/frameLayout"

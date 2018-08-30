@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:background="@drawable/album"
         android:text="本地相册分析"/>
 
     <Button
@@ -16,6 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/photography"
         android:text="实物拍照分析"/>
 
     <Button
@@ -23,6 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/file"
         android:text="Excel文件分析"/>
 
     <!--<TextView-->
