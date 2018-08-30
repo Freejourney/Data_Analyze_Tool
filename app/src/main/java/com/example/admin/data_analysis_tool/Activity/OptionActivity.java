@@ -36,6 +36,8 @@ public class OptionActivity extends Activity implements View.OnClickListener{
 
     private Button btn_test, btn_camera, btn_file;
     private baidu_table_rec btr = new baidu_table_rec();
+    private String sup = "";
+    private String con = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +49,10 @@ public class OptionActivity extends Activity implements View.OnClickListener{
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
+
+        Intent intent = getIntent();
+        sup = intent.getStringExtra("sup");
+        con = intent.getStringExtra("con");
 
         btn_test = findViewById(R.id.btn_test);
         btn_camera = findViewById(R.id.btn_camera);
@@ -79,8 +85,6 @@ public class OptionActivity extends Activity implements View.OnClickListener{
                     }
                 }).start();
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -106,7 +110,7 @@ public class OptionActivity extends Activity implements View.OnClickListener{
 
     public void startRecognize(InputStream stream) throws IOException {
         System.out.println("*********************百度识别**********************");
-        String result_r = btr.main(input2byte(stream), OptionActivity.this);
+        String result_r = btr.main(input2byte(stream), OptionActivity.this, sup, con);
         System.out.println("*********************RESULT**********************");
         System.out.println(result_r);
     }
