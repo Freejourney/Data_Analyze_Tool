@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.example.admin.data_analysis_tool.Fragment.ItemDetailFragment;
 import com.example.admin.data_analysis_tool.R;
@@ -23,14 +24,22 @@ import com.example.admin.data_analysis_tool.R;
  */
 public class ItemDetailActivity extends AppCompatActivity {
 
+    private EditText et_con;
+    private EditText et_sup;
+    String con = "0.3";
+    String sup = "0.8";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_item_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
 //        setSupportActionBar(toolbar);
+
+        et_con = findViewById(R.id.et_con);
+        et_sup = findViewById(R.id.et_sup);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +47,16 @@ public class ItemDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startActivity(new Intent(ItemDetailActivity.this, OptionActivity.class));
+                if (et_con.getText().toString().length() != 0){
+                    con = et_con.getText().toString();
+                }
+                if (et_sup.getText().toString().length() != 0) {
+                    sup = et_sup.getText().toString();
+                }
+                Intent intent = new Intent(ItemDetailActivity.this, OptionActivity.class);
+                intent.putExtra("sup", sup);
+                intent.putExtra("con", con);
+                startActivity(intent);
             }
         });
 
