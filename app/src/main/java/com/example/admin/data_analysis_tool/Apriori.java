@@ -1,6 +1,7 @@
 package com.example.admin.data_analysis_tool;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.admin.data_analysis_tool.Utils.TxtReader;
 
@@ -26,14 +27,16 @@ public class Apriori {
     static Map<Integer, Integer> dCountMap = new HashMap<Integer, Integer>(); // k-1频繁集的记数表
     static Map<Integer, Integer> dkCountMap = new HashMap<Integer, Integer>();// k频繁集的记数表
     static List<List<String>> record = new ArrayList<List<String>>();// 数据记录表
-    final static double MIN_SUPPORT = 0.2;// 最小支持度
-    final static double MIN_CONF = 0.8;// 最小置信度
+    static double MIN_SUPPORT = 0.2;// 最小支持度
+    static double MIN_CONF = 0.8;// 最小置信度
     static int lable = 1;// 用于输出时的一个标记，记录当前在打印第几级关联集
     static List<Double> confCount = new ArrayList<Double>();// 置信度记录表
     static List<List<String>> confItemset = new ArrayList<List<String>>();// 满足支持度的集合
 
 
-    public String main(String filepath, Context context) throws IOException {
+    public String main(String filepath, Context context, String sup, String con) throws IOException {
+        MIN_CONF = Double.parseDouble(con);
+        MIN_SUPPORT = Double.parseDouble(sup);
         // TODO Auto-generated method stub
         record = getRecord(filepath);// 获取原始数据记录
         List<List<String>> cItemset = findFirstCandidate();// 获取第一次的备选集
@@ -54,6 +57,7 @@ public class Apriori {
             dCountMap.putAll(dkCountMap);
         }
 //        tv_content.setText(result);
+        Toast.makeText(context, "数据挖掘完毕", Toast.LENGTH_LONG).show();
         return result;
     }
 

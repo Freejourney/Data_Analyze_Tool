@@ -34,7 +34,9 @@ public class baidu_table_rec {
 	private String filepath = "";
 	private Apriori apriori = new Apriori();
 	private String result_r = "";
-	
+	private String sup = "";
+	private String con = "";
+
 	private void RequestPost(String url, String accessToken, byte[] stream) {
 		try {
 			String imgStr = Base64Util.encode(stream);
@@ -71,7 +73,7 @@ public class baidu_table_rec {
                         filepath = excelutils.getXlsData(filename,0, context);
 
                         System.out.println("*********************APRIORI**********************");
-                        result_r = apriori.main(filepath,context);
+                        result_r = apriori.main(filepath,context, sup, con);
                         Intent intent = new Intent(baidu_table_rec.context, ResultActivity.class);
                         intent.putExtra("result", result_r);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -150,7 +152,9 @@ public class baidu_table_rec {
         return bos.toByteArray();
     }
 
-	public String main(byte[] stream, Context context) {
+	public String main(byte[] stream, Context context, String sup, String con) {
+        this.sup = sup;
+        this.con = con;
         this.context = context;
 		baidu_table_rec btr = new baidu_table_rec();
 		AuthService authService = new AuthService();
