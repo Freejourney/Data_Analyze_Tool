@@ -2,11 +2,9 @@ package com.example.admin.data_analysis_tool;
 
 import android.content.Context;
 
-import com.example.admin.data_analysis_tool.Activity.TestActivity;
 import com.example.admin.data_analysis_tool.Utils.TxtReader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +33,9 @@ public class Apriori {
     static List<List<String>> confItemset = new ArrayList<List<String>>();// 满足支持度的集合
 
 
-    public void main(Context context) throws IOException {
+    public String main(String filepath, Context context) throws IOException {
         // TODO Auto-generated method stub
-        record = getRecord(context.getAssets().open("simple.txt"));// 获取原始数据记录
+        record = getRecord(filepath);// 获取原始数据记录
         List<List<String>> cItemset = findFirstCandidate();// 获取第一次的备选集
         List<List<String>> lItemset = getSupportedItemset(cItemset);// 获取备选集cItemset满足支持的集合
 
@@ -48,7 +46,7 @@ public class Apriori {
             List<List<String>> lkItemset = getSupportedItemset(ckItemset);// 获取备选集cItemset满足支持的集合
             getConfidencedItemset(lkItemset, lItemset, dkCountMap, dCountMap);// 获取备选集cItemset满足置信度的集合
             if (confItemset.size() != 0)// 满足置信度的集合不为空
-                result = printConfItemset(confItemset);// 打印满足置信度的集合
+                result += printConfItemset(confItemset);// 打印满足置信度的集合
             confItemset.clear();// 清空置信度的集合
             cItemset = ckItemset;// 保存数据，为下次循环迭代准备
             lItemset = lkItemset;
@@ -56,6 +54,7 @@ public class Apriori {
             dCountMap.putAll(dkCountMap);
         }
 //        tv_content.setText(result);
+        return result;
     }
 
     /**
@@ -64,8 +63,8 @@ public class Apriori {
      */
     static String printConfItemset(List<List<String>> confItemset2) {
         String confitemsetmsg = "";
-        System.out.print("*********频繁模式挖掘结果***********\n");
-        confitemsetmsg += "*********频繁模式挖掘结果***********\n";
+        System.out.print("**************挖掘结果****************\n");
+        confitemsetmsg += "**************挖掘结果****************\n";
         for (int i = 0; i < confItemset2.size(); i++) {
             int j = 0;
             for (j = 0; j < confItemset2.get(i).size() - 3; j++) {
@@ -74,9 +73,9 @@ public class Apriori {
             }
             System.out.print("-->");
             System.out.print(confItemset2.get(i).get(j++));
-            System.out.print("相对支持度：" + confItemset2.get(i).get(j++));
-            System.out.print("自信度：" + confItemset2.get(i).get(j++) + "\n");
-            confitemsetmsg += "-->" + confItemset2.get(i).get(j-1) + "相对支持度" + confItemset2.get(i).get(j-1) + "自信度：" + confItemset2.get(i).get(j++) + "\n";
+            System.out.print("支持度：" + confItemset2.get(i).get(j++));
+            System.out.print("置信度：" + confItemset2.get(i).get(j++) + "\n");
+            confitemsetmsg += "-->" + confItemset2.get(i).get(j-1) + "支持度" + confItemset2.get(i).get(j-1) + "置信度：" + confItemset2.get(i).get(j-1) + "\n";
         }
         return confitemsetmsg;
     }
@@ -165,9 +164,9 @@ public class Apriori {
     /**
      获取数据库记录
      */
-    static List<List<String>> getRecord(InputStream stream) {
+    static List<List<String>> getRecord(String filepath) {
         TxtReader readRecord = new TxtReader();
-        return readRecord.getRecord(stream);
+        return readRecord.getRecord(filepath);
     }
 
     /**

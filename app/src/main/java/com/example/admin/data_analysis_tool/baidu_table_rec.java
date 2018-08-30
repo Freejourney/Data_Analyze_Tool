@@ -1,12 +1,13 @@
 package com.example.admin.data_analysis_tool;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 
+import com.example.admin.data_analysis_tool.Activity.ResultActivity;
 import com.example.admin.data_analysis_tool.Utils.AuthService;
 import com.example.admin.data_analysis_tool.Utils.Base64Util;
 import com.example.admin.data_analysis_tool.Utils.Excelutils;
-import com.example.admin.data_analysis_tool.Utils.FileUtil;
 import com.example.admin.data_analysis_tool.Utils.HttpUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -26,10 +27,13 @@ import org.json.JSONObject;
 
 public class baidu_table_rec {
 
-    private Context context;
+    public static Context context;
 	private String request_Url = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request";
 	private String AccessToken = "";
 	private String filename = "";
+	private String filepath = "";
+	private Apriori apriori = new Apriori();
+	private String result_r = "";
 	
 	private void RequestPost(String url, String accessToken, byte[] stream) {
 		try {
@@ -51,17 +55,35 @@ public class baidu_table_rec {
             param.put("request_id", request_id);
             param.put("result_type", result_type);
             String body = URLEncoder.encode("request_id", "UTF-8") + "=" + URLEncoder.encode(request_id, "UTF-8");
-            String result = HttpUtil.post(result_url, accessToken, body);
+            final String result = HttpUtil.post(result_url, accessToken, body);
             JSONObject jsonRecResult = new JSONObject(result);
             JSONObject recdata = (JSONObject) jsonRecResult.get("result");
-            String result_data = recdata.getString("result_data");
+            final String result_data = recdata.getString("result_data");
             System.out.println("Return xls file url : " + recdata.getString("result_data"));
 
             filename = "analysisdata" + System.currentTimeMillis() +".xls";
-            downLoadFromUrl(result_data, filename, String.valueOf(context.getAssets()));
-            Excelutils excelutils = new Excelutils();
-            excelutils.getXlsData(filename,0, context);
-            System.out.println(result);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        downLoadFromUrl(result_data, filename, String.valueOf(Environment.getExternalStorageDirectory()));
+                        Excelutils excelutils = new Excelutils();
+                        filepath = excelutils.getXlsData(filename,0, context);
+
+                        System.out.println("*********************APRIORI**********************");
+                        result_r = apriori.main(filepath,context);
+                        Intent intent = new Intent(baidu_table_rec.context, ResultActivity.class);
+                        intent.putExtra("result", result_r);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+//                        System.out.println(result_r);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }).start();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,6 +118,7 @@ public class baidu_table_rec {
             saveDir.mkdir();
         }
         File file = new File(saveDir + File.separator + fileName);
+
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getData);
         if (fos != null) {
@@ -127,12 +150,13 @@ public class baidu_table_rec {
         return bos.toByteArray();
     }
 
-	public void main(byte[] stream, Context context) {
+	public String main(byte[] stream, Context context) {
         this.context = context;
 		baidu_table_rec btr = new baidu_table_rec();
 		AuthService authService = new AuthService();
 		btr.AccessToken = authService.getAuth();
 		btr.RequestPost(btr.request_Url, btr.AccessToken, stream);
 //		System.out.println("Access Token : "+authService.getAuth());
+        return result_r;
 	}
 }
