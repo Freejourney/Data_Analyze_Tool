@@ -26,8 +26,8 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     private EditText et_con;
     private EditText et_sup;
-    String con = "0.3";
-    String sup = "0.8";
+    String con = "0.8";
+    String sup = "0.2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
