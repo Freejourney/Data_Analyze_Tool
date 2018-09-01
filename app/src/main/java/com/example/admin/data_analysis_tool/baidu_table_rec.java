@@ -153,10 +153,12 @@ public class baidu_table_rec {
     }
 
 	public String main(byte[] stream, Context context, String sup, String con) {
-        this.sup = sup;
-        this.con = con;
+//        this.sup = sup;
+//        this.con = con;
         this.context = context;
 		baidu_table_rec btr = new baidu_table_rec();
+		btr.sup = sup;
+		btr.con = con;
 		AuthService authService = new AuthService();
 		btr.AccessToken = authService.getAuth();
 		btr.RequestPost(btr.request_Url, btr.AccessToken, stream);

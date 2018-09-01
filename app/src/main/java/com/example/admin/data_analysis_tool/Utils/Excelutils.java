@@ -1,17 +1,12 @@
 package com.example.admin.data_analysis_tool.Utils;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-
-import com.example.admin.data_analysis_tool.Student;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -70,8 +65,8 @@ public class Excelutils {
                         } else {
                             rank = "H";
                         }
-                        line_data += i + rank + " ";
-                        System.out.print(i + rank + " ");
+                        line_data += j + rank + " ";
+                        System.out.print(j + rank + " ");
                     } catch (Exception e) {}
                 }
                 if (line_data.length() != 0) {

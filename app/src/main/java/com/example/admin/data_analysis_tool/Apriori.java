@@ -1,7 +1,7 @@
 package com.example.admin.data_analysis_tool;
 
 import android.content.Context;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import com.example.admin.data_analysis_tool.Utils.TxtReader;
 
@@ -35,8 +35,10 @@ public class Apriori {
 
 
     public String main(String filepath, Context context, String sup, String con) throws IOException {
-        MIN_CONF = Double.parseDouble(con);
-        MIN_SUPPORT = Double.parseDouble(sup);
+        if (sup != null && con != null) {
+            MIN_CONF = Double.parseDouble(con);
+            MIN_SUPPORT = Double.parseDouble(sup);
+        }
         // TODO Auto-generated method stub
         record = getRecord(filepath);// 获取原始数据记录
         List<List<String>> cItemset = findFirstCandidate();// 获取第一次的备选集
@@ -57,7 +59,7 @@ public class Apriori {
             dCountMap.putAll(dkCountMap);
         }
 //        tv_content.setText(result);
-        Toast.makeText(context, "数据挖掘完毕", Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, "数据挖掘完毕", Toast.LENGTH_LONG).show();
         return result;
     }
 
@@ -79,7 +81,7 @@ public class Apriori {
             System.out.print(confItemset2.get(i).get(j++));
             System.out.print("支持度：" + confItemset2.get(i).get(j++));
             System.out.print("置信度：" + confItemset2.get(i).get(j++) + "\n");
-            confitemsetmsg += "-->" + confItemset2.get(i).get(j-1) + "支持度" + confItemset2.get(i).get(j-1) + "置信度：" + confItemset2.get(i).get(j-1) + "\n";
+            confitemsetmsg += "-->" + confItemset2.get(i).get(j-3)+ "\n" + "支持度" + confItemset2.get(i).get(j-2) + "置信度：" + confItemset2.get(i).get(j-1) + "\n\n";
         }
         return confitemsetmsg;
     }
